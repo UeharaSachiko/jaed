@@ -1,0 +1,129 @@
+@charset "utf-8";
+
+body {
+    background: black;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+    font-family: sans-serif;
+    color: white;
+}
+
+.theme {
+    background: #66ab78;
+}
+
+#head {
+    k-background: linear-gradient(#666, #222);
+    color: white;
+    width: 100%;
+    padding: 1vh 0;
+    font-size: 5vw;
+    height: 4.4vh;
+    line-height: 4.4vh;
+}
+
+#main {
+    background: linear-gradient(#fff, #fff);
+}
+
+#ind {
+    height: 25.5vh;
+    line-height: 25.5vh;
+    font-size: 28vw;
+    font-weight: bold;
+    x-text-shadow: .2vh .2vh .2vh #999;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 2vh 0vh;
+}
+
+.indcorrect {
+    background: linear-gradient(#f22, #e60);
+}
+
+.indincorrect {
+    background: linear-gradient(#22f, rgb(23, 46, 122));
+}
+
+.indclear {
+    background: linear-gradient(#fd0, #e90);
+}
+
+#q {
+    height: 10vh;
+    font-size: 5vw;
+    padding: 0.5vh;
+    color: black;
+}
+
+#ans {
+    padding-bottom: 1vh;
+}
+
+#ans>div {
+    display: inline-block;
+    width: 35vw;
+    font-size: 3.5vw;
+    border-radius: .5vh .5vh;
+    x-border: .3vh solid black;
+    height: 24vh;
+    line-height: 24vh;
+    padding: .2vh;
+    margin: 3vh 2vh;
+
+    background: #668ad8;
+    color: #FFF;
+    box-shadow: 0 0 0 1vh #668ad8;
+    border: dashed .3vh #FFF;
+}
+
+#ans>.disable {
+    background: gray;
+    color: white;
+    box-shadow: 0 0 0 1vh gray;
+}
+
+#ans>.correct {
+    background: #f22;
+    color: white;
+    box-shadow: 0 0 0 1vh #f22;
+}
+
+#credit {
+    x-background: linear-gradient(#444, #000);
+    color: #ddd;
+    text-align: center;
+    height: 6vh;
+    line-height: 3vh;
+    font-size: 2vw;
+    padding: 1vh;
+}
+
+#credit a {
+    color: #fff !important;
+    text-decoration: none;
+}
+
+/* for portrait mode */
+@media (min-aspect-ratio: 3/4) {
+    #head {
+        font-size: 3vh;
+    }
+
+    #ind {
+        font-size: 20vh;
+    }
+
+    #q {
+        font-size: 4vh;
+    }
+
+    #ans>div {
+        font-size: 3.5vw;
+    }
+
+    #credit {
+        font-size: 2vh;
+    }
+}
