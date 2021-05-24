@@ -1,81 +1,125 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>クイズ画面</title>
+<link href="base.css" type="text/css" rel="stylesheet" media="all">
+</head>
+<body>
 
-<!DOCTYPE html><html><head><meta charset="utf-8"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-    <meta name="viewport" content="width=device-width"/>
-    
-    <title>クイズ  - q2.js</title>
-    <link rel="apple-touch-icon" href="machiorcho.png"/>
-    <meta property="og:image" content="machiorcho.png"/>
-    <link rel="stylesheet" type="text/css" href="q2js.css"/>
-    <script src=https://fukuno.jig.jp/fukuno.js></script>
-    <script src="https://code4fukui.github.io/localgovjp/localgovjp.js"></script>
-    <script src=q2.js></script>
-    
-    <script>"use strict"
-    window.onload = async function() {
-        if (!LOCALGOV_JP)
-            return
-    
-        // タイトル
-        const title = "どちらでしょうか？"
-    
-        // 調査
+<h1>ことばクイズ！レベル〇</h1>
+<div id="check" class="clearfix">
+    <!-- Q1 -->
+    <dl class="q" id="q1a">
+    <dt><span>問題1</span>「高い」はどれですか。</dt>
+    </dl>
+    <!-- Q2 -->
+    <dl class="q" id="q2a">
+    <dt><span>問題2</span>「遠い」はどれですか。</dt>
+    </dl>
+    <!-- Q3 -->
+    <dl class="q" id="q3a">
+    <dt><span>問題3</span>「細い」はどれですか。</dt>
+    </dl>
+    <!-- Q4 -->
+    <dl class="q" id="q4a">
+    <dt><span>問題4</span>「寒い」はどれですか。</dt>
+    </dl>
+    <!-- Q5 -->
+    <dl class="q" id="q5a">
+    <dt><span>質問5</span>「広い」はどれですか。</dt>
+    </dl>
 
-        shuffle(LOCALGOV_JP)
-    
-    
-        // 問題文、正解、誤答
-        // まち、か、ちょうで終わるものを 10問 抽出
-        const quiz = []
-        let n = 10
-        for (const gov of LOCALGOV_JP) {
-            if (gov.citykana.endsWith("まち")) {
-                quiz.push([ gov.pref + " " + gov.city, gov.citykana, gov.citykana.substring(0, gov.citykana.length - 2) + "ちょう", true ])
-            } else if (gov.citykana.endsWith("ちょう")) {
-                quiz.push([ gov.pref + " " + gov.city, gov.citykana.substring(0, gov.citykana.length - 3) + "まち", gov.citykana, false ])
-            }
-            if (quiz.length == n)
-                break
-    //		console.log(gov)
-        }
-        
-    //	quiz.push( [ "福島県 磐梯町", "ばんだいまち", "ばんだいちょう", true ])
-    
-        // クリアした時
-        var callback = function(pnt) {
-            alert(pnt + "問正解！ 正解率 " + Math.floor(100 * pnt / quiz.length) + "%")
-    
-            // 即、ジャンプしたい場合はこちら
-    //		location = "https://fukuno.jig.jp/2355"
-    
-            // ダイアログ形式で尋ねたい場合はこちら
-            if (confirm("磐梯町 x クイズフレームワーク q2.js についてくわしく知りたい")) {
-                location = "https://fukuno.jig.jp/2752"
-            } else if (confirm("もういちど？")) {
-                location.reload()
-            }
-        }
-        // クイズスタート
-        startQuiz(title, quiz, callback)
+
+<!-- 解決した？ -->
+    <dl class="q" id="kaiketsu">
+      <dt><span>質問6</span>問題は解決しましたか？</dt>
+      <dd><img src="img/kaiketsu.png"></dd>
+    </dl>
+    <!-- 残念 -->
+    <dl class="q" id="zannen">
+      <dt><span>ドンマイ！</span>大人しくバイク屋へ行きましょう</dt>
+      <dd><img src="img/zannen.png"></dd>
+    </dl>
+    <!-- 直った -->
+    <dl class="q" id="omedeto">
+      <dt><span>やりましたね！</span>地の果てまで走りましょう！</dt>
+      <dd><img src="img/omedeto.png"></dd>
+    </dl>
+    <ul>
+      <li id="yes">A</li>
+      <li id="no">B</li>
+    </ul>
+  </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+
+var num = 1;  //質問の順番
+var qua = 5;  //質問数
+var branch = 'a';  //質問の分岐の種類
+var speed = 300;  //スライドの速度
+var nextQ = 'q' + num + branch;  //表示させるdiv（ID）の指定
+var allclear = false;  //trueなら最後の質問へ
+
+//質問のカウントアップ
+function nq(){
+  num ++;
+  nextQ = 'q' + num + branch;
+}
+
+//次の画面へ移動
+function slide(){
+  $('#'+nextQ).animate({ marginLeft: -650}, speed);
+  nq();
+  $('#'+nextQ).animate({ marginLeft: 0}, speed);
+}
+
+//解決しましたか？画面の表示
+function kaiketsu(){
+  $('#kaiketsu dt span').text('質問'+num);
+  allclear = true;
+  $('#kaiketsu').animate({ marginLeft: 0}, speed);
+}
+
+//最後の画面
+function saigo(n){
+  $('#check ul').animate({ opacity: 0}, speed);
+  $('#kaiketsu').animate({ marginLeft: -650}, speed);
+  $('#'+n).animate({ marginLeft: 0}, speed);
+}
+
+//『はい』を選択した際の動き
+$("#yes").click(function(){
+  if(allclear == false) {
+    if(num < qua) {
+      slide();
+    } else {
+      $('#'+nextQ).animate({ marginLeft: -650}, speed);
+      nq();
+      kaiketsu();
     }
-    </script>
-    </head><body>
-    
-    <div id=head class=theme>第1問</div>
-    <div id=main>
-        <!--<div id=ind class=indcorrect></div>-->
-        <div id=ind class=indcorrect>正解</div>
-        <!--<div id=ind class=indincorrect>不正解</div>-->
-        <div id=q>福島県磐梯町</div>
-        <div id=ans>
-            <div id=ans1>まち</div>
-            <div class=correct id=ans2>ちょう</div>
-        </div>
-    </div>
-    
-    <div id=credit class=theme>
-        APP: <a href=https://fukuno.jig.jp/2752>CC BY fukuno.jig.jp - 2択クイズアプリ framework q2.js</a><br>
-        DATA: CC0 <a href=https://github.com/code4fukui/localgovjp>localgovjp - GitHub</a> by <a href=http://fukui.opendata.cc>Code for Fukui</a><br>
-    </div>
-    </body></html>
+  } else {
+    saigo('omedeto');
+  }
+});
+
+//『いいえ』を選択した際の動き
+$("#no").click(function(){
+  if(allclear == false) {
+    if(num == 1) {
+      branch = 'b';
+      slide();
+    } else {
+      $('#'+nextQ).animate({ marginLeft: -650}, speed);
+      nq();
+      kaiketsu();
+    }
+  } else {
+    saigo('zannen');
+  }
+});
+
+</script>
+</body>
+</html>
